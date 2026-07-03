@@ -247,8 +247,8 @@
         })
         .catch(err => {
           console.error('データの取得に失敗:', err);
-          alert('データの読み込みに失敗しました');
-          // エラーでもローディング画面は消す
+          // 💡変更：エラーの正体をポップアップに直接表示させる
+          alert('エラーの正体: ' + err.message);
           document.getElementById('loading-overlay').style.opacity = '0';
           setTimeout(() => { document.getElementById('loading-overlay').style.display = 'none'; }, 500);
         });
