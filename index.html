@@ -74,6 +74,8 @@
     }
   </style>
   <meta name="google-site-verification" content="tKp6Fsq27jw0SuIx6MoTOn4Hja1SIi_V971wFCNP9aw" />
+  <!-- 💡追加：Instagram公式埋め込み用スクリプト -->
+  <script async src="//www.instagram.com/embed.js"></script>
 </head>
 <body class="antialiased relative">
 
@@ -277,27 +279,29 @@
         document.getElementById('likeCount').textContent = currentLikes.toLocaleString();
       }
 
-      // Instagram生成
-      const igGrid = document.getElementById('instagram-grid');
+      // Instagramの描画（公式埋め込み版）
+      const igGrid = document.getElementById('ig-grid');
       igGrid.innerHTML = '';
       if (data.igPosts && data.igPosts.length > 0) {
         data.igPosts.forEach(post => {
-          let iconHtml = '';
-          if (post.mediaType === 'CAROUSEL_ALBUM') {
-            iconHtml = `<div class="absolute top-4 right-4 bg-black/30 backdrop-blur-sm text-white w-8 h-8 rounded-full flex items-center justify-center"><i class="fas fa-clone text-sm"></i></div>`;
-          } else if (post.mediaType === 'VIDEO') {
-            iconHtml = `<div class="absolute top-4 right-4 bg-black/30 backdrop-blur-sm text-white w-8 h-8 rounded-full flex items-center justify-center"><i class="fas fa-video text-sm"></i></div>`;
-          }
+          // B列の画像(imageUrl)ではなく、A列のURL(url)を使います
           const html = `
-            <a href="${post.url}" target="_blank" rel="noopener noreferrer" class="snap-center shrink-0 w-[85%] sm:w-[80%] aspect-square overflow-hidden rounded-3xl shadow-sm hover:opacity-80 transition-opacity relative block border-2 border-pink-50">
-              <img src="${post.imageUrl}" class="w-full h-full object-cover" loading="lazy">
-              ${iconHtml}
-            </a>
+            <div class="snap-center shrink-0 w-[300px] sm:w-[320px] rounded-3xl overflow-hidden shadow-sm relative border-2 border-pink-50 flex items-center justify-center bg-gray-50 pt-2 px-2">
+              <blockquote class="instagram-media" data-instgrm-permalink="${post.url}?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style="background:#FFF; border:0; margin:0; padding:0; width:100%;"></blockquote>
+            </div>
           `;
           igGrid.insertAdjacentHTML('beforeend', html);
         });
+
+        // HTMLを追加した後、Instagramのスクリプトに描画を指示する
+        setTimeout(() => {
+          if (window.instgrm) {
+            window.instgrm.Embeds.process();
+          }
+        }, 100);
+
       } else {
-        igGrid.innerHTML = `<div class="w-full text-center py-8 text-xs text-gray-400">Instagramの投稿がありません☁️</div>`;
+        igGrid.innerHTML = '<p class="text-xs text-gray-400 text-center w-full py-4">Instagramの投稿がまだありません</p>';
       }
 
       // moomooo生成
