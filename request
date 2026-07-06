@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REQUEST | moomooo</title>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9ZNYFZC4NK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-9ZNYFZC4NK');
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    /* 根本的解決：Googleサイト埋め込み時の確実なスクロール対策 */
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* 親要素（ページ全体）のスクロールを完全に固定 */
+      background-color: #FDDDE6;
+      font-family: 'Zen Maru Gothic', 'Hiragino Maru Gothic ProN', sans-serif; 
+      color: #555555;
+    }
+    
+    /* 内部で安全にスクロールさせるための専用ラッパー */
+    .scroll-container {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch; /* スマホで滑らかにスクロール */
+      padding: 2.5rem 1rem;
+    }
+    
+    @media (min-width: 640px) {
+      .scroll-container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+      }
+    }
+
+    .modal-enter { opacity: 0; transition: opacity 0.3s ease-out; }
+    .modal-enter-active { opacity: 1; }
+  </style>
+</head>
+<body class="antialiased">
+
+  <!-- スクロール専用コンテナ -->
+  <div class="scroll-container" id="mainScroll">
+    <div class="max-w-2xl w-full bg-white shadow-xl rounded-[2.5rem] border-4 border-white mx-auto pb-6">
+      
+      <div class="py-10 px-8 text-center bg-gradient-to-b from-[#F4FBFF] to-white rounded-t-[2.5rem]">
+        <img src="https://lh3.googleusercontent.com/d/1Yz1wXUemE6ylIVmU88eqYMGWZyu19jtt" alt="moomooo" class="mx-auto h-24 sm:h-32 object-contain mb-4">
+        <h1 class="text-sm tracking-widest uppercase font-bold text-[#6CA6FF]">Request Form</h1>
+        <p class="text-xs text-gray-500 mt-3 font-medium">欲しい商品やアイテムを教えてください☁️</p>
+        
+        <div class="mt-5 p-3 sm:px-4 bg-gray-50 rounded-2xl border border-gray-100 text-left inline-block max-w-[90%]">
+          <p class="text-[11px] text-gray-500 leading-relaxed font-medium">
+            <span class="text-pink-400 font-bold mb-1 inline-block">⚠️ご注意</span><br>
+            いただいたリクエストは参考にさせていただきますが、商品の入荷・販売することをお約束するものではございません。あらかじめご了承くださいませ。
+          </p>
+        </div>
+      </div>
+
+      <form id="requestForm" class="p-8 sm:p-12 space-y-8" onsubmit="submitForm(event)">
+        
+        <div class="space-y-5 bg-pink-50/50 p-6 rounded-3xl">
+          <h2 class="text-sm font-bold border-b-2 border-pink-200 pb-2 text-[#6CA6FF] flex items-center">
+            <span class="text-lg mr-2">🎀</span> Customer Info
+          </h2>
+          
+          <div>
+            <label for="name" class="block text-xs font-bold text-gray-600 mb-2">ニックネーム <span class="text-pink-500 ml-1">*</span></label>
+            <!-- 💡 修正ポイント: すべての input に h-[50px] を追加して高さを強制確保 -->
+            <input type="text" id="name" name="name" required
+              class="block w-full h-[50px] px-4 py-3 border-2 border-pink-100 rounded-2xl focus:ring-4 focus:ring-[#6CA6FF]/20 focus:border-[#6CA6FF] outline-none transition text-sm bg-white shadow-sm" />
+          </div>
+
+          <div>
+            <label for="email" class="block text-xs font-bold text-gray-600 mb-2">メールアドレス <span class="text-pink-500 ml-1">*</span></label>
+            <input type="email" id="email" name="email" required
+              class="block w-full h-[50px] px-4 py-3 border-2 border-pink-100 rounded-2xl focus:ring-4 focus:ring-[#6CA6FF]/20 focus:border-[#6CA6FF] outline-none transition text-sm bg-white shadow-sm" />
+          </div>
+
+          <div>
+            <label for="social" class="block text-xs font-bold text-gray-600 mb-2">YouTubeメンバーシップにご加入の方 <span class="text-gray-400 font-normal ml-1">任意</span></label>
+            <!-- 💡 修正ポイント: pattern属性とoninvalidイベントを追加して「@」から始まるチェックを実装 -->
+            <input type="text" id="social" name="social" placeholder="@ハンドル名"
+              pattern="^@.*"
+              oninvalid="this.setCustomValidity(this.value ? 'ハンドル名は「@」から始めてください。' : '')"
+              oninput="this.setCustomValidity('')"
+              class="block w-full h-[50px] px-4 py-3 border-2 border-pink-100 rounded-2xl focus:ring-4 focus:ring-[#6CA6FF]/20 focus:border-[#6CA6FF] outline-none transition text-sm bg-white shadow-sm" />
+          </div>
+        </div>
+
+        <div class="space-y-6 pt-2">
+          <div class="flex justify-between items-end border-b-2 border-blue-100 pb-2 px-2">
+            <h2 class="text-sm font-bold text-[#6CA6FF] flex items-center">
+               <span class="text-lg mr-2">🛍️</span> Request Items
+            </h2>
+            <span class="text-xs font-bold text-[#6CA6FF] bg-blue-50 px-3 py-1 rounded-full" id="itemCountDisplay">1 / 5</span>
+          </div>
+
+          <div id="productsContainer" class="space-y-6">
+            <div class="req-box space-y-4 bg-white border-2 border-blue-50 p-5 rounded-3xl shadow-sm" id="req-1">
+              <div class="flex justify-between items-center">
+                <h3 class="text-xs font-bold text-[#6CA6FF] bg-blue-50 px-3 py-1 rounded-full">ITEM 1</h3>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-600 mb-2">リクエストする商品名 <span class="text-pink-500 ml-1">*</span></label>
+                <!-- 💡 修正ポイント: h-[50px] 追加 -->
+                <input type="text" class="req-name-input block w-full h-[50px] px-4 py-3 border-2 border-blue-50 rounded-2xl focus:ring-4 focus:ring-[#6CA6FF]/20 focus:border-[#6CA6FF] outline-none transition text-sm bg-gray-50/50" required />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-600 mb-2">商品の参考URL <span class="text-pink-500 ml-1">*</span></label>
+                <!-- 💡 修正ポイント: type="url" を type="text" inputmode="url" に変更し、h-[50px] を追加 -->
+                <input type="text" inputmode="url" class="req-link-input block w-full h-[50px] px-4 py-3 border-2 border-blue-50 rounded-2xl focus:ring-4 focus:ring-[#6CA6FF]/20 focus:border-[#6CA6FF] outline-none transition text-sm bg-gray-50/50" required placeholder="URLを貼り付け" />
+              </div>
+            </div>
+          </div>
+
+          <button type="button" id="addProductBtn" onclick="addProduct()"
+            class="w-full py-4 border-2 border-dashed border-[#6CA6FF] text-[#6CA6FF] font-bold text-sm hover:bg-[#F4FBFF] transition rounded-3xl flex justify-center items-center">
+            <span class="text-xl mr-1">＋</span> アイテムを追加する
+          </button>
+        </div>
+
+        <div class="pt-6 border-t-2 border-dashed border-pink-100 px-2">
+          <label class="block text-xs font-bold text-gray-600 mb-3">利用規約およびプライバシーポリシー <span class="text-pink-500 ml-1">*</span></label>
+          <button type="button" onclick="openModal('consentModal')" class="w-full bg-pink-50 text-gray-700 border-2 border-pink-100 rounded-2xl py-4 px-5 flex items-center justify-between hover:bg-pink-100 transition focus:outline-none">
+            <span class="text-sm font-bold">同意事項を確認する</span>
+            <span id="consentStatusUI" class="text-xs font-bold text-gray-400 bg-white px-3 py-1 rounded-full shadow-sm">未確認</span>
+          </button>
+          <input type="hidden" id="consent" name="consent" value="false">
+        </div>
+
+        <div class="pt-4">
+          <button type="submit" id="submitBtn" disabled
+            class="w-full bg-[#6CA6FF] text-white text-base font-bold rounded-full py-5 px-4 hover:bg-[#5B95EE] hover:shadow-lg hover:-translate-y-1 transition-all duration-200 disabled:opacity-40 disabled:hover:translate-y-0 disabled:hover:shadow-none disabled:cursor-not-allowed flex justify-center items-center">
+            <span id="btnText">リクエストを送信 💌</span>
+            <svg id="loadingSpinner" class="hidden animate-spin ml-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </button>
+          <p id="submitWarning" class="text-xs text-pink-500 font-bold text-center mt-3">※送信するには同意事項の確認が必要です</p>
+        </div>
+      </form>
+
+      <div id="successMessage" class="hidden p-12 text-center bg-white rounded-b-[2.5rem]">
+        <div class="text-6xl mb-4">🎉</div>
+        <h2 class="text-2xl font-bold text-[#6CA6FF] mb-4">Thank You!</h2>
+        <p class="text-sm text-gray-600 mb-8 leading-relaxed font-medium bg-blue-50 p-4 rounded-2xl">
+          リクエストを受け付けました✨<br>
+          ご入力いただいたメールアドレス宛に<br>控えを送信いたしました。
+        </p>
+        <button onclick="resetForm()" class="bg-pink-100 text-pink-500 font-bold px-8 py-4 rounded-full text-sm hover:bg-pink-200 transition">
+          新しくリクエストを作成する ＋
+        </button>
+      </div>
+    </div>
+
+    <!-- 💡 修正ポイント: target="_blank" と rel="noopener noreferrer" を追加して別タブで開くようにしました -->
+    <div class="mt-8 mb-2 text-center">
+      <a href="https://moomooo.theshop.jp/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-bold text-gray-500 hover:text-pink-400 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        ショップのホームへ戻る
+      </a>
+    </div>
+  </div>
+
+  <div id="consentModal" class="fixed inset-0 z-40 flex items-center justify-center hidden p-4">
+    <div class="absolute inset-0 bg-[#FDDDE6]/80 backdrop-blur-sm" onclick="closeModal('consentModal')"></div>
+    <div id="modalContent" class="relative bg-white w-full max-w-lg shadow-2xl flex flex-col max-h-[85vh] modal-enter rounded-[2rem] border-4 border-white">
+      <div class="px-8 py-6 border-b-2 border-pink-50 bg-pink-50/30 rounded-t-[2rem]">
+        <h3 class="text-base font-bold text-[#6CA6FF] flex items-center">
+          <span class="text-xl mr-2">📜</span> 利用規約・プライバシーポリシー
+        </h3>
+      </div>
+      <div class="px-8 py-6 overflow-y-auto flex-grow text-xs text-gray-600 leading-relaxed space-y-6 font-medium">
+        <p>moomooo（以下「当店」）は、お客様の個人情報の保護を最も重要な責務と認識し、以下の通りプライバシーポリシーを定めます。</p>
+        <div class="bg-blue-50/50 p-4 rounded-2xl">
+          <h4 class="font-bold text-[#6CA6FF] mb-2 flex items-center"><span class="bg-[#6CA6FF] text-white w-5 h-5 rounded-full inline-flex items-center justify-center mr-2 text-[10px]">1</span> 個人情報の収集・利用目的</h4>
+          <p>ご入力いただいた個人情報は、以下の目的でのみ利用いたします。</p>
+          <ul class="list-disc pl-5 mt-2 space-y-1 text-gray-500">
+            <li>リクエストいただいた商品の確認および入荷状況等のご連絡</li>
+            <li>当店からのサービス向上、関連商品、キャンペーン等のご案内</li>
+            <li>お問い合わせに対する回答</li>
+          </ul>
+        </div>
+        <div class="bg-blue-50/50 p-4 rounded-2xl">
+          <h4 class="font-bold text-[#6CA6FF] mb-2 flex items-center"><span class="bg-[#6CA6FF] text-white w-5 h-5 rounded-full inline-flex items-center justify-center mr-2 text-[10px]">2</span> 個人情報の第三者提供について</h4>
+          <p class="text-gray-500">当店は、法令に基づく場合や公的機関からの要請による場合を除き、あらかじめお客様の同意を得ることなく、第三者に個人情報を提供することはありません。</p>
+        </div>
+        <div class="bg-blue-50/50 p-4 rounded-2xl">
+          <h4 class="font-bold text-[#6CA6FF] mb-2 flex items-center"><span class="bg-[#6CA6FF] text-white w-5 h-5 rounded-full inline-flex items-center justify-center mr-2 text-[10px]">3</span> 情報の管理・保護</h4>
+          <p class="text-gray-500">収集した個人情報は、不正アクセス、漏洩、滅失等の防止のため、適切な安全管理措置を講じます。</p>
+        </div>
+      </div>
+      <div class="px-6 py-6 border-t-2 border-pink-50 bg-white rounded-b-[2rem] flex flex-col sm:flex-row gap-3">
+        <button type="button" onclick="handleDisagree()" class="w-full sm:w-1/2 py-4 rounded-full border-2 border-gray-200 text-gray-500 text-sm font-bold hover:bg-gray-50 transition">
+          キャンセル ✖
+        </button>
+        <button type="button" onclick="handleAgree()" class="w-full sm:w-1/2 py-4 bg-[#6CA6FF] text-white text-sm font-bold rounded-full hover:bg-[#5B95EE] hover:shadow-md transition">
+          同意する ✔
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="customAlertModal" class="fixed inset-0 z-50 flex items-center justify-center hidden p-4">
+    <div class="absolute inset-0 bg-black/30 backdrop-blur-sm" onclick="closeCustomAlert()"></div>
+    <div class="relative bg-white w-full max-w-sm rounded-[2rem] shadow-2xl overflow-hidden transform transition-all">
+      <div id="custom-alert-header" class="p-5 border-b-2 flex items-center">
+        <i id="custom-alert-icon" class="fas mr-3 text-2xl"></i>
+        <h3 id="custom-alert-title" class="text-base font-bold"></h3>
+      </div>
+      <div class="p-6 text-center text-sm text-gray-600 font-medium whitespace-pre-line leading-relaxed" id="custom-alert-message"></div>
+      <div class="p-5 flex justify-center bg-gray-50">
+        <button type="button" onclick="closeCustomAlert()" class="px-10 py-3 bg-[#6CA6FF] hover:bg-[#5B95EE] text-white font-bold rounded-full shadow-md transition">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 💡追加：ここに先ほど新しく発行したGASのURLを貼り付けます！
+    const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbzdI5jY3YDZPbFzcpJBcT04avgZupDFXxMCA9NujgmWLgqM-_oht4iOfd9jiszAvvfVRg/exec';
+    function showCustomAlert(title, message, type = 'error') {
+      const modal = document.getElementById('customAlertModal');
+      const titleEl = document.getElementById('custom-alert-title');
+      const messageEl = document.getElementById('custom-alert-message');
+      const headerEl = document.getElementById('custom-alert-header');
+      const iconEl = document.getElementById('custom-alert-icon');
+
+      titleEl.textContent = title;
+      messageEl.textContent = message;
+
+      headerEl.className = 'p-5 border-b-2 flex items-center';
+      iconEl.className = 'fas mr-3 text-2xl';
+      
+      if (type === 'error') {
+        headerEl.classList.add('bg-pink-50', 'border-pink-100');
+        titleEl.classList.add('text-pink-600');
+        iconEl.classList.add('fa-exclamation-circle', 'text-pink-500');
+      } else {
+        headerEl.classList.add('bg-blue-50', 'border-blue-100');
+        titleEl.classList.add('text-[#6CA6FF]');
+        iconEl.classList.add('fa-info-circle', 'text-[#6CA6FF]');
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeCustomAlert() {
+      document.getElementById('customAlertModal').classList.add('hidden');
+    }
+
+    let productCount = 1;
+    const MAX_PRODUCTS = 5;
+
+    function addProduct() {
+      if (productCount >= MAX_PRODUCTS) return;
+      productCount++;
+      const container = document.getElementById('productsContainer');
+      const index = productCount;
+      
+      const html = `
+        <div class="req-box space-y-4 bg-white border-2 border-blue-50 p-5 rounded-3xl shadow-sm" id="req-${index}">
+          <div class="flex justify-between items-center">
+            <h3 class="text-xs font-bold text-[#6CA6FF] bg-blue-50 px-3 py-1 rounded-full">ITEM ${index}</h3>
+            <button type="button" onclick="removeProduct(${index})" class="text-xs font-bold text-pink-400 bg-pink-50 px-3 py-1 rounded-full hover:bg-pink-100 transition">削除 ✖</button>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-600 mb-2">リクエストする商品名 <span class="text-pink-500 ml-1">*</span></label>
+            <!-- 💡 修正ポイント: h-[50px] 追加 -->
+            <input type="text" class="req-name-input block w-full h-[50px] px-4 py-3 border-2 border-blue-50 rounded-2xl focus:ring-4 focus:ring-[#6CA6FF]/20 focus:border-[#6CA6FF] outline-none transition text-sm bg-gray-50/50" required />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-600 mb-2">商品の参考URL <span class="text-pink-500 ml-1">*</span></label>
+            <!-- 💡 修正ポイント: type="text" inputmode="url" に変更し、h-[50px] を追加 -->
+            <input type="text" inputmode="url" class="req-link-input block w-full h-[50px] px-4 py-3 border-2 border-blue-50 rounded-2xl focus:ring-4 focus:ring-[#6CA6FF]/20 focus:border-[#6CA6FF] outline-none transition text-sm bg-gray-50/50" required placeholder="URLを貼り付け" />
+          </div>
+        </div>
+      `;
+      container.insertAdjacentHTML('beforeend', html);
+      
+      // 💡 追加ポイント: 動的追加時にブラウザの描画バグ（透明化）を防ぐための強制再描画処理
+      const addedItem = document.getElementById(`req-${index}`);
+      if (addedItem) {
+        addedItem.style.display = 'none';
+        void addedItem.offsetHeight; // ブラウザに再計算を強制させる魔法のコード
+        addedItem.style.display = 'block';
+      }
+      
+      updateItemUI();
+    }
+
+    function removeProduct(id) {
+      const el = document.getElementById(`req-${id}`);
+      if (el) {
+        el.remove();
+        productCount--;
+        reindexProducts();
+        updateItemUI();
+      }
+    }
+
+    function reindexProducts() {
+      const items = document.querySelectorAll('.req-box');
+      items.forEach((item, idx) => {
+        const newIndex = idx + 1;
+        item.id = `req-${newIndex}`;
+        item.querySelector('h3').textContent = `ITEM ${newIndex}`;
+        const btn = item.querySelector('button');
+        if (btn) btn.setAttribute('onclick', `removeProduct(${newIndex})`);
+      });
+    }
+
+    function updateItemUI() {
+      document.getElementById('itemCountDisplay').textContent = `${productCount} / ${MAX_PRODUCTS}`;
+      document.getElementById('addProductBtn').style.display = (productCount >= MAX_PRODUCTS) ? 'none' : 'flex';
+    }
+
+    const consentInput = document.getElementById('consent');
+    const consentStatusUI = document.getElementById('consentStatusUI');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitWarning = document.getElementById('submitWarning');
+    const requestForm = document.getElementById('requestForm');
+    const successMessage = document.getElementById('successMessage');
+
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+      if(id === 'consentModal') {
+        setTimeout(() => document.getElementById('modalContent').classList.add('modal-enter-active'), 10);
+      }
+    }
+
+    function closeModal(id) {
+      if(id === 'consentModal') {
+        document.getElementById('modalContent').classList.remove('modal-enter-active');
+        setTimeout(() => document.getElementById(id).classList.add('hidden'), 300);
+      } else {
+        document.getElementById(id).classList.add('hidden');
+      }
+    }
+
+    function handleAgree() {
+      consentInput.value = 'true';
+      consentStatusUI.textContent = '同意済み✨';
+      consentStatusUI.className = 'text-xs font-bold text-[#6CA6FF] bg-blue-50 px-3 py-1 rounded-full shadow-sm';
+      submitBtn.disabled = false;
+      submitWarning.classList.add('hidden');
+      closeModal('consentModal');
+    }
+
+    function handleDisagree() {
+      consentInput.value = 'false';
+      consentStatusUI.textContent = '未確認';
+      consentStatusUI.className = 'text-xs font-bold text-gray-400 bg-white px-3 py-1 rounded-full shadow-sm';
+      submitBtn.disabled = true;
+      submitWarning.classList.remove('hidden');
+      closeModal('consentModal');
+    }
+
+      function submitForm(event) {
+      event.preventDefault();
+
+      if (consentInput.value !== 'true') {
+        openModal('consentModal');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      document.getElementById('btnText').textContent = '送信中...';
+      document.getElementById('loadingSpinner').classList.remove('hidden');
+
+      const products = Array.from(document.querySelectorAll('.req-box')).map((item) => {
+        return {
+          name: item.querySelector('.req-name-input').value,
+          url: item.querySelector('.req-link-input').value
+        };
+      });
+
+      const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        social: document.getElementById('social').value,
+        products: products,
+        consent: consentInput.value
+      };
+
+      // 💡変更：google.script.run ではなく fetch で送信する
+      fetch(GAS_API_URL, {
+        method: 'POST',
+        // CORSのブロックを避けるため、JSON文字列として送信する
+        body: JSON.stringify(formData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if(data.success) {
+          requestForm.classList.add('hidden');
+          successMessage.classList.remove('hidden');
+          document.getElementById('mainScroll').scrollTop = 0; 
+        } else {
+          showCustomAlert('送信エラー', '送信に失敗しました。\n' + data.message, 'error');
+          resetSubmitButton();
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showCustomAlert('通信エラー', 'サーバーとの通信に失敗しました。\nしばらく時間をおいてから再度お試しください。', 'error');
+        resetSubmitButton();
+      });
+    }
+
+    function resetSubmitButton() {
+      submitBtn.disabled = false;
+      document.getElementById('btnText').textContent = 'リクエストを送信 💌';
+      document.getElementById('loadingSpinner').classList.add('hidden');
+    }
+
+    function resetForm() {
+      requestForm.reset();
+      handleDisagree();
+      productCount = 1;
+      document.getElementById('productsContainer').innerHTML = `
+        <div class="req-box space-y-4 bg-white border-2 border-blue-50 p-5 rounded-3xl shadow-sm" id="req-1">
+          <div class="flex justify-between items-center">
+            <h3 class="text-xs font-bold text-[#6CA6FF] bg-blue-50 px-3 py-1 rounded-full">ITEM 1</h3>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-600 mb-2">リクエストする商品名 <span class="text-pink-500 ml-1">*</span></label>
+            <input type="text" class="req-name-input block w-full h-[50px] px-4 py-3 border-2 border-blue-50 rounded-2xl focus:ring-4 focus:ring-[#6CA6FF]/20 focus:border-[#6CA6FF] outline-none transition text-sm bg-gray-50/50" required />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-600 mb-2">商品の参考URL <span class="text-pink-500 ml-1">*</span></label>
+            <input type="text" inputmode="url" class="req-link-input block w-full h-[50px] px-4 py-3 border-2 border-blue-50 rounded-2xl focus:ring-4 focus:ring-[#6CA6FF]/20 focus:border-[#6CA6FF] outline-none transition text-sm bg-gray-50/50" required placeholder="URLを貼り付け" />
+          </div>
+        </div>
+      `;
+      updateItemUI();
+      successMessage.classList.add('hidden');
+      requestForm.classList.remove('hidden');
+      resetSubmitButton();
+      document.getElementById('mainScroll').scrollTop = 0;
+    }
+  </script>
+</body>
+</html>
